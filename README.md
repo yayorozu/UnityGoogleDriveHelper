@@ -12,16 +12,16 @@ UnityWebRequest を利用して Google Drive を利用できるライブラリ
 
 サンプルとして、3つのEditorWindowがある
 
-#### Tools/GoogleDrive/Folder
+#### Tools/GoogleDriveSample/Folder
 
 ディレクトリ一覧を表示する
 
 
-#### Tools/GoogleDrive/ShareSpreadSheet
+#### Tools/GoogleDriveSample/ShareSpreadSheet
 公開されている Spread Sheet の読み込み
 
 
-#### Tools/GoogleDrive/SpreadSheet
+#### Tools/GoogleDriveSample/SpreadSheet
 Spread Sheet の読み込み
 
 ## Sample Code
