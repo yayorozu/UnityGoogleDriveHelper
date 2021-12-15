@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Yorozu.GoogleDriveHelper.File;
 
 namespace Yorozu.GoogleDriveHelper.SpreadSheet
 {
@@ -10,11 +9,7 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 	[Serializable]
 	public class GoogleSpreadSheetOAuthData : GoogleOAuthData
 	{
-		public GoogleSpreadSheetOAuthData(string clientId, string clientSecret, bool isReadonly = true) : base(clientId, clientSecret, isReadonly)
-		{
-		}
-
-		public GoogleSpreadSheetOAuthData(GoogleOAuthClientData data, bool isReadonly = true) : base(data, isReadonly)
+		public GoogleSpreadSheetOAuthData(IGoogleOAuthClient data, bool isReadonly = true) : base(data, isReadonly)
 		{
 		}
 
@@ -27,7 +22,11 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 		{
 			void Get(string accessToken)
 			{
-				GoogleSpreadSheetApi.GetSpreadSheet(accessToken, spreadSheetId, data => load?.Invoke(data));
+				GoogleSpreadSheetApi.GetSpreadSheet(
+					accessToken, 
+					spreadSheetId, 
+					data => load?.Invoke(data),
+					e => error?.Invoke(e));
 			}
 
 			GetToken(Get, error);
@@ -47,7 +46,8 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 					accessToken,
 					data.Id,
 					sheet.properties,
-					array => load?.Invoke(array)
+					array => load?.Invoke(array),
+					e => error?.Invoke(e)
 				);
 			}
 
@@ -90,7 +90,8 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 					data.Id,
 					sheet.properties,
 					param,
-					post => success?.Invoke(post)
+					post => success?.Invoke(post),
+					e => error?.Invoke(e)
 				);
 			}
 
@@ -116,7 +117,8 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 					sheet.properties,
 					param,
 					range,
-					put => success?.Invoke(put)
+					put => success?.Invoke(put),
+					e => error?.Invoke(e)
 				);
 			}
 

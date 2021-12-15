@@ -18,48 +18,49 @@ namespace Yorozu.GoogleDriveHelper
 		{
 			using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
 			{
-				if (GUILayout.Button("認証コードを取得", EditorStyles.toolbarButton))
+				EditorGUILayout.Space(5);
+				
+				if (GUILayout.Button("Get OAuth Code", EditorStyles.toolbarButton))
 				{
 					data.GetOAuthCode();
 				}
-
-				GUILayout.Label("認証コード:", EditorStyles.toolbarButton);
-				using (var check = new EditorGUI.ChangeCheckScope())
+				
+				EditorGUILayout.Space(5);
+				
+				if (GUILayout.Button("Paste OAuth Code From Clipboard", EditorStyles.toolbarButton))
 				{
-					var code = "";
-					code = GUILayout.TextField(code, GUILayout.Width(200));
-					if (check.changed)
+					var code = GUIUtility.systemCopyBuffer;
+					if (!string.IsNullOrEmpty(code))
 					{
-						if (!string.IsNullOrEmpty(code))
-						{
-							data.DeleteToken();
-							data.SetOAuthCode(code);
-							data.GetToken();
-						}
+						data.DeleteToken();
+						data.SetOAuthCode(code);
+						data.GetToken();
 					}
 				}
-
-				if (GUILayout.Button("トークン取得", EditorStyles.toolbarButton))
+				
+				GUILayout.FlexibleSpace();
+				
+				if (GUILayout.Button("Load Access Token", EditorStyles.toolbarButton))
 				{
 					data.GetToken(token => self.Repaint());
 				}
 
-				if (GUILayout.Button("トークン削除", EditorStyles.toolbarButton))
+				if (GUILayout.Button("Delete Access Token", EditorStyles.toolbarButton))
 				{
 					data.DeleteToken();
 					self.Repaint();
 				}
-
-				GUILayout.FlexibleSpace();
+				EditorGUILayout.Space(5);
 			}
 
 			return data.ValidAccessToken;
 		}
 #endif
 
-		public static void DisplayError(this ErrorMessage self)
+		
+		public static void DisplayError(this EditorWindow self, ErrorMessage errorMessage)
 		{
-			Debug.LogError(self.ToString());
+			Debug.LogError(errorMessage);
 		}
 	}
 }

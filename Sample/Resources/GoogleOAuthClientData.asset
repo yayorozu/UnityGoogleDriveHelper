@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03d36b391472c48aea78937c01ba5dbb, type: 3}
-  m_Name: GoogleAuthData
+  m_Name: GoogleOAuthClientData
   m_EditorClassIdentifier: 
   ClientId: 
   ClientSecret: 

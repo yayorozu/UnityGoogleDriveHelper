@@ -52,26 +52,32 @@ namespace Yorozu.GoogleDriveHelper
 				builder.AppendLine("Details:");
 				foreach (var detail in error.details)
 				{
-					builder.AppendLine($"\tType: {detail.type}");
-					if (!string.IsNullOrEmpty(detail.reason))
-						builder.AppendLine($"\tReason: {detail.reason}");
-					if (!string.IsNullOrEmpty(detail.domain))
-						builder.AppendLine($"\tDomain: {detail.domain}");
-
-					if (detail.metadata != null)
+					if (!string.IsNullOrEmpty(detail.reason) || !string.IsNullOrEmpty(detail.domain))
 					{
-						builder.AppendLine("\tMetaData:");
-						builder.AppendLine($"\t\tService: {detail.metadata.service}");
-						builder.AppendLine($"\t\tConsumer: {detail.metadata.consumer}");
+						builder.AppendLine($"   Type: {detail.type}");
+						if (!string.IsNullOrEmpty(detail.reason))
+							builder.AppendLine($"   Reason: {detail.reason}");
+						if (!string.IsNullOrEmpty(detail.domain))
+							builder.AppendLine($"   Domain: {detail.domain}");
+					}
+
+					if (detail.metadata != null && 
+					    !string.IsNullOrEmpty(detail.metadata.service) || !string.IsNullOrEmpty(detail.metadata.consumer))
+					{
+						builder.AppendLine("   MetaData:");
+						if (!string.IsNullOrEmpty(detail.metadata.service))
+							builder.AppendLine($"      Service: {detail.metadata.service}");
+						if (!string.IsNullOrEmpty(detail.metadata.consumer))
+							builder.AppendLine($"      Consumer: {detail.metadata.consumer}");
 					}
 
 					if (detail.links != null && detail.links.Length > 0)
 					{
-						builder.AppendLine("\tLinks:");
+						builder.AppendLine("   Links:");
 						foreach (var link in detail.links)
 						{
-							builder.AppendLine($"\t\tDescription: {link.description}");
-							builder.AppendLine($"\t\tUrl {link.url}");
+							builder.AppendLine($"      Description: {link.description}");
+							builder.AppendLine($"      Url {link.url}");
 						}
 					}
 				}

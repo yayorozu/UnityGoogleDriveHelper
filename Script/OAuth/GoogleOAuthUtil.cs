@@ -62,7 +62,7 @@ namespace Yorozu.GoogleDriveHelper
 
 			if (!token.CanRequestToken())
 			{
-				Debug.LogError("Set OAuth Code");
+				Debug.Log("Set OAuth Code");
 				return;
 			}
 

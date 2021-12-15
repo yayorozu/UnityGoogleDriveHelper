@@ -7,7 +7,7 @@ namespace Yorozu.GoogleDriveHelper
 {
 	public class GoogleDriveDirectoryWindow : EditorWindow
 	{
-		[MenuItem("Tools/GoogleDrive/Folder")]
+		[MenuItem("Tools/GoogleDriveSample/Folder")]
 		private static void ShowWindow()
 		{
 			var window = GetWindow<GoogleDriveDirectoryWindow>();
@@ -24,7 +24,7 @@ namespace Yorozu.GoogleDriveHelper
 
 		private void OnEnable()
 		{
-			var data = GoogleOAuthClientData.Load("GoogleAuthData");
+			var data = GoogleOAuthClientData.ResourcesLoad("GoogleAuthData");
 			_data = new GoogleDriveFileOAuthData(data);
 			_data.SetToken(new EditorOAuthToken(EditorApplication.applicationPath));
 		}
@@ -60,7 +60,7 @@ namespace Yorozu.GoogleDriveHelper
 						UpdateFileList(file.parents.First());
 					}
 
-					_data.LoadFile(parents.First(), Load, e => e.DisplayError());
+					_data.LoadFile(parents.First(), Load, this.DisplayError);
 				}
 			}
 
@@ -86,7 +86,7 @@ namespace Yorozu.GoogleDriveHelper
 			{
 				_list = list;
 				Repaint();
-			});
+			}, this.DisplayError);
 		}
 	}
 }

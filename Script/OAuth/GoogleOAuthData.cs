@@ -6,8 +6,8 @@ namespace Yorozu.GoogleDriveHelper
 	[Serializable]
 	public abstract class GoogleOAuthData
 	{
-		public virtual string ClientId { get; protected set; }
-		public virtual string ClientSecret { get; }
+		internal string ClientId { get; }
+		internal string ClientSecret { get; }
 
 		protected OAuthToken _token;
 		private bool _isReadonly;
@@ -16,15 +16,11 @@ namespace Yorozu.GoogleDriveHelper
 		{
 			_isReadonly = isReadonly;
 		}
-
-		protected GoogleOAuthData(string clientId, string clientSecret, bool isReadonly = true) : this(isReadonly)
+		
+		protected GoogleOAuthData(IGoogleOAuthClient data, bool isReadonly = true) : this(isReadonly)
 		{
-			ClientId = clientId;
-			ClientSecret = clientSecret;
-		}
-
-		protected GoogleOAuthData(GoogleOAuthClientData data, bool isReadonly = true) : this(data.ClientId, data.ClientSecret, isReadonly)
-		{
+			ClientId = data.ClientId;
+			ClientSecret = data.ClientSecret;
 		}
 
 		/// <summary>

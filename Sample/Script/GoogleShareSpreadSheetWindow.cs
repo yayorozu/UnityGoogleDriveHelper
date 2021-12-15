@@ -7,7 +7,7 @@ namespace Yorozu.GoogleDriveHelper
 {
 	public class GoogleShareSpreadSheetWindow : EditorWindow
 	{
-		[MenuItem("Tools/GoogleDrive/ShareSpreadSheet")]
+		[MenuItem("Tools/GoogleDriveSample/ShareSpreadSheet")]
 		private static void ShowWindow()
 		{
 			var window = GetWindow<GoogleShareSpreadSheetWindow>();

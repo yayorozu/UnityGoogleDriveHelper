@@ -7,7 +7,7 @@ namespace Yorozu.GoogleDriveHelper
 {
 	public class GoogleSpreadSheetWindow : EditorWindow
 	{
-		[MenuItem("Tools/GoogleDrive/SpreadSheet")]
+		[MenuItem("Tools/GoogleDriveSample/SpreadSheet")]
 		private static void ShowWindow()
 		{
 			var window = GetWindow<GoogleSpreadSheetWindow>();
@@ -25,7 +25,7 @@ namespace Yorozu.GoogleDriveHelper
 
 		private void OnEnable()
 		{
-			var data = GoogleOAuthClientData.Load("GoogleAuthData");
+			var data = GoogleOAuthClientData.ResourcesLoad("GoogleAuthData");
 			_data = new GoogleSpreadSheetOAuthData(data);
 			_data.SetToken(new EditorOAuthToken(EditorApplication.applicationPath));
 		}
@@ -47,7 +47,7 @@ namespace Yorozu.GoogleDriveHelper
 					{
 						_sheetData = data;
 						Repaint();
-					});
+					}, this.DisplayError);
 				}
 			}
 
@@ -60,7 +60,7 @@ namespace Yorozu.GoogleDriveHelper
 				foreach (var sheet in _sheetData.sheets)
 				{
 					if (GUILayout.Button(sheet.properties.title))
-					{;
+					{
 						_data.LoadSheet(_sheetData, sheet, v =>
 						{
 							_sheet = v;
@@ -74,7 +74,7 @@ namespace Yorozu.GoogleDriveHelper
 							}
 
 							Repaint();
-						});
+						}, this.DisplayError);
 					}
 				}
 			}
@@ -96,7 +96,8 @@ namespace Yorozu.GoogleDriveHelper
 							{
 								for (var x = 0; x < _sheet.GetLength(0); x++)
 								{
-									EditorGUILayout.TextArea(_sheet[x, y].Replace("\\n", "\n"),
+									EditorGUILayout.TextArea(
+										_sheet[x, y].Replace("\\n", "\n"),
 										GUILayout.Width(_maxSize[x]));
 								}
 							}
@@ -105,5 +106,6 @@ namespace Yorozu.GoogleDriveHelper
 				}
 			}
 		}
+
 	}
 }

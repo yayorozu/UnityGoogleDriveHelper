@@ -11,9 +11,7 @@ namespace Yorozu.GoogleDriveHelper.File
 	{
 		protected override string Scope => "https://www.googleapis.com/auth/drive";
 
-		public GoogleDriveFileOAuthData(string clientId, string clientSecret) : base(clientId, clientSecret) { }
-
-		public GoogleDriveFileOAuthData(GoogleOAuthClientData data) : base(data) { }
+		public GoogleDriveFileOAuthData(IGoogleOAuthClient data) : base(data) { }
 
 		/// <summary>
 		/// Driveにある画像をロード
