@@ -25,9 +25,12 @@ namespace Yorozu.GoogleDriveHelper
 
 		private void OnEnable()
 		{
-			var data = GoogleOAuthClientData.ResourcesLoad("GoogleAuthData");
-			_data = new GoogleSpreadSheetOAuthData(data);
-			_data.SetToken(new EditorOAuthToken(EditorApplication.applicationPath));
+			var data = GoogleOAuthClientData.LoadFromEditor();
+			if (data != null)
+			{
+				_data = new GoogleSpreadSheetOAuthData(data);
+				_data.SetToken(new EditorOAuthToken(EditorApplication.applicationPath));
+			}
 		}
 
 		private void OnGUI()

@@ -53,7 +53,7 @@ namespace Yorozu.GoogleDriveHelper
 				EditorGUILayout.Space(5);
 			}
 
-			return data.ValidAccessToken;
+			return data != null && data.ValidAccessToken;
 		}
 #endif
 
