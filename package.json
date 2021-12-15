@@ -1,0 +1,23 @@
+{
+  "name": "yorozu.google-drive-helper",
+  "version": "1.0.0",
+  "displayName": "Google Drive Helper",
+  "description": "Google Drive API を利用して Google Drive を操作できる",
+  "unity": "2020.3",
+  "keywords": [
+    "Yorozu",
+    "GoogleDrive"
+  ],
+  "author": {
+    "name": "Yororizu",
+    "email": "hatch.tech.eng@gmail.com",
+    "url": "https://github.com/yayorozu"
+  },
+  "samples": [
+    {
+      "displayName": "Google Drive Sample",
+      "description": "リンクを知っていればアクセスできる Spread Sheet を読み込むサンプル\n認証が必要な Spread Sheet を読み込みサンプル\nGoogle Drive のディレクトリを表示するサンプル",
+      "path": "Sample"
+    }
+  ]
+}
