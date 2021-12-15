@@ -2,6 +2,8 @@
 
 UnityWebRequest を利用して Google Drive を利用できるライブラリ
 
+現状以下の機能に対応しています
+
 * SpreadSheet の読み書き
 * ディレクトリ一覧の表示
 * 画像のロードに対応しています
