@@ -17,7 +17,7 @@
     {
       "displayName": "Google Drive Sample",
       "description": "リンクを知っていればアクセスできる Spread Sheet を読み込むサンプル\n認証が必要な Spread Sheet を読み込みサンプル\nGoogle Drive のディレクトリを表示するサンプル",
-      "path": "Sample"
+      "path": "Samples~/GoogleDriveAccess"
     }
   ]
 }
