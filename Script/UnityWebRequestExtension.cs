@@ -10,6 +10,8 @@ namespace Yorozu.GoogleDriveHelper
 {
 	public static class UnityWebRequestExtension
 	{
+		private static RequestComponent _requestComponent;
+		
 		/// <summary>
 		/// Json を追加
 		/// </summary>
@@ -40,25 +42,17 @@ namespace Yorozu.GoogleDriveHelper
 				return;
 			}
 #endif
-			var obj = new GameObject("RequestObject")
+			if (_requestComponent == null)
 			{
-				hideFlags = HideFlags.HideAndDontSave
-			};
-
-			void Destroy()
-			{
-#if UNITY_EDITOR
-				Object.DestroyImmediate(obj);
-#else
-				Object.Destroy(obj);
-#endif
+				var obj = new GameObject("RequestObject", typeof(RequestComponent))
+				{
+					hideFlags = HideFlags.HideAndDontSave
+				};
+				
+				_requestComponent = obj.GetComponent<RequestComponent>();
 			}
-
-			success += Destroy;
-			error += e => Destroy();
-
-			var mono = obj.GetComponent<MonoBehaviour>();
-			mono.StartCoroutine(RequestImpl(self, success, error));
+			
+			_requestComponent.StartCoroutine(RequestImpl(self, success, error));
 		}
 
 		private static IEnumerator RequestImpl(UnityWebRequest request, Action success, Action<ErrorMessage> error)
