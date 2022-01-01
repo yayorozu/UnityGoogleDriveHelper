@@ -54,6 +54,36 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 			json.AppendLine("}");
 			return json.ToString();
 		}
+		
+		/// <summary>
+		/// シート名とRowのJsonに変換
+		/// </summary>
+		internal static string ConvertPostAppsScriptJson(string sheetName, IList<string> rows, int skipRow = 0)
+		{
+			var json = new System.Text.StringBuilder();
+			json.AppendLine("{");
+
+			json.AppendFormat(" \"sheetName\": \"{0}\",\n", sheetName);
+			json.AppendFormat(" \"skip\": {0},\n", skipRow);
+			{
+				json.AppendLine(" \"rows\": [");
+				json.AppendLine("  [");
+				for (var x = 0; x < rows.Count; x++)
+				{
+					json.AppendFormat("   \"{0}\"", rows[x]);
+					if (x < rows.Count - 1)
+						json.Append(",");
+
+					json.AppendLine();
+				}
+
+				json.AppendLine("  ]");
+
+				json.AppendLine(" ]"); // rows
+			}
+			json.AppendLine("}");
+			return json.ToString();
+		}
 
 		/// <summary>
 		/// Jsonを無理やりパース

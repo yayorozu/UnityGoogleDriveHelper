@@ -74,3 +74,65 @@ data.LoadSheet(_sheetData, sheet, v =>
 });
 ```
 
+### AppsScript を利用する
+
+ランタイムでは Private な Google Drive にアクセスするのは厳しいので
+AppsScript を利用してお手軽にアクセスできる
+
+```cs
+var deployId = "";
+
+var json = "";
+// 独自Json を利用して AppsScript を POST で呼び出す
+GoogleSpreadSheetApi.PostAppsScript(deployId, json);
+
+var sheetName = "シート1";
+var rows = new[] {"a", "b"};
+
+// 以下のスクリプトを利用して指定したシートの最後に文字を追加する
+GoogleSpreadSheetApi.PostAppsScript(deployId, sheetName, rows, 1);
+```
+
+```
+function doPost(e) {
+  var params = JSON.parse(e.postData.getDataAsString());
+
+  var text = addLast(params);
+
+  // レスポンス作成
+  var output = ContentService.createTextOutput();
+  output.setMimeType(ContentService.MimeType.JSON);
+  output.setContent(JSON.stringify({ message: text }));
+  return output;
+}
+
+// 最後に追加する
+function addLast(params) {
+  var sheetName = params.sheetName;
+  var rows = params.rows;
+  var skip = params.skip;
+
+  if (sheetName == null || rows == null)
+    return "Invalid Param";
+  
+  if (skip == null)
+    skip = 0;
+
+  var active = SpreadsheetApp.getActive();
+  var sheet = active.getSheetByName(sheetName);
+  if (sheet == null)
+    return "Sheet Not Found";
+  
+  var last = sheet.getLastRow();
+  // rowsは2次元配列
+  var count = rows[0].length;
+  if (count <= 0)
+    return "Rows is Empty";
+  
+  var cell = sheet.getRange(last + 1, 1 + skip, 1, count);
+  cell.setValues(rows);
+
+  // 成功した場合は空文字列を返す
+  return "";
+}
+```

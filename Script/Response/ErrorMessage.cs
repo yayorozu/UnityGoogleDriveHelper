@@ -6,7 +6,7 @@ namespace Yorozu.GoogleDriveHelper
 	[Serializable]
 	public class ErrorMessage
 	{
-		public Error error;
+		public Error error = new Error();
 
 		[Serializable]
 		public class Error
