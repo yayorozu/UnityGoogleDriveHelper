@@ -74,23 +74,80 @@ data.LoadSheet(_sheetData, sheet, v =>
 });
 ```
 
-### AppsScript を利用する
+# AppsScript を利用する
 
 ランタイムでは Private な Google Drive にアクセスするのは厳しいので
-AppsScript を利用してお手軽にアクセスできる
+AppsScript を利用してお手軽にアクセスする
+
+## Get
+
+```cs
+var deployId = "";
+var p = new Dictionary<string, string>()
+{
+    {"sheetName", "シート1"}
+};
+
+// string[,] で取得する
+AppsScriptApi.GetAppsScriptCSV(deployId, p, ar => {});
+
+// CSV形式で取得する
+AppsScriptApi.GetAppsScriptCSV(deployId, p, csv => {});
+
+// 特定のクラスにパースする
+AppsScriptApi.GetAppsScript<Sample>(deployId, p, list => {}); 
+```
+
+上記スクリプトを利用する際に使える全セルデータを取得するGAS
+
+```
+function doGet(e) {
+  if (e.parameter == null)
+    return;
+ 
+  var sheetName = e.parameter.sheetName;
+ 
+  var spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadSheet.getSheetByName(sheetName);
+  if (sheet == null)
+    return;
+ 
+  var csv = "";
+  var range = sheet.getDataRange();
+  var values = range.getValues();
+  for (var i = 0; i < values.length; i++) {
+    var rows = [];
+    for (var j = 0; j < values[i].length; j++) {
+      rows[j] = "\"" + values[i][j] + "\"";
+    }
+ 
+    csv += rows.join(",");
+    if (i < values.length - 1) {
+       csv += "\r\n";
+    }
+  }
+ 
+  var output = ContentService.createTextOutput();
+  output.setMimeType(ContentService.MimeType.CSV);
+  output.setContent(csv);
+  return output;
+}
+```
+
+## Post
 
 ```cs
 var deployId = "";
 
 var json = "";
 // 独自Json を利用して AppsScript を POST で呼び出す
-GoogleSpreadSheetApi.PostAppsScript(deployId, json);
+AppsScriptApi.PostAppsScript(deployId, json);
 
 var sheetName = "シート1";
 var rows = new[] {"a", "b"};
 
 // 以下のスクリプトを利用して指定したシートの最後に文字を追加する
-GoogleSpreadSheetApi.PostAppsScript(deployId, sheetName, rows, 1);
+AppsScriptApi.PostAppsScript(deployId, sheetName, rows, 1);
 ```
 
 ```
