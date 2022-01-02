@@ -56,36 +56,6 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 		}
 		
 		/// <summary>
-		/// シート名とRowのJsonに変換
-		/// </summary>
-		internal static string ConvertPostAppsScriptJson(string sheetName, IList<string> rows, int skipRow = 0)
-		{
-			var json = new System.Text.StringBuilder();
-			json.AppendLine("{");
-
-			json.AppendFormat(" \"sheetName\": \"{0}\",\n", sheetName);
-			json.AppendFormat(" \"skip\": {0},\n", skipRow);
-			{
-				json.AppendLine(" \"rows\": [");
-				json.AppendLine("  [");
-				for (var x = 0; x < rows.Count; x++)
-				{
-					json.AppendFormat("   \"{0}\"", rows[x]);
-					if (x < rows.Count - 1)
-						json.Append(",");
-
-					json.AppendLine();
-				}
-
-				json.AppendLine("  ]");
-
-				json.AppendLine(" ]"); // rows
-			}
-			json.AppendLine("}");
-			return json.ToString();
-		}
-
-		/// <summary>
 		/// Jsonを無理やりパース
 		/// </summary>
 		internal static string[,] ParseJson(string json)
@@ -143,6 +113,9 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 				var row = new List<string>();
 				foreach (var cell in s.Split(','))
 				{
+					if (string.IsNullOrEmpty(cell))
+						continue;
+					
 					var begin = cell.IndexOf("\"", StringComparison.Ordinal) + 1;
 					var end = cell.LastIndexOf("\"", StringComparison.Ordinal);
 					var text = cell.Substring(begin, end - begin);
@@ -173,7 +146,7 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 
 			int FindArgIndex(string name)
 			{
-				for (var x = 1; x < data.GetLength(0); x++)
+				for (var x = 0; x < data.GetLength(0); x++)
 				{
 					if (data[x, 0] == name)
 						return x;
