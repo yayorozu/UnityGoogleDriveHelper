@@ -179,29 +179,33 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 		private static object Parse(FieldInfo fieldInfo, string value)
 		{
 			var type = fieldInfo.FieldType;
-			try
+			if (type.IsEnum)
 			{
-				if (type.IsEnum)
+				try
+				{
 					return Enum.Parse(type, value);
-				if (type == typeof(string))
-					return value;
-				if (type == typeof(int))
-					return int.Parse(value);
-				if (type == typeof(uint))
-					return uint.Parse(value);
-				if (type == typeof(float))
-					return float.Parse(value);
-				if (type == typeof(double))
-					return double.Parse(value);
-				if (type == typeof(long))
-					return long.Parse(value);
-				if (type == typeof(bool))
-					return bool.Parse(value);
+				}
+				catch
+				{
+					var values = Enum.GetValues(type);
+					return values.GetValue(0);
+				}
 			}
-			catch (Exception e)
-			{
-				Debug.LogError(e.Message);
-			}
+
+			if (type == typeof(string))
+				return value;
+			if (type == typeof(int))
+				return int.TryParse(value, out var p) ? p : 0;
+			if (type == typeof(uint))
+				return uint.TryParse(value, out var p) ? p : 0;
+			if (type == typeof(float))
+				return float.TryParse(value, out var p) ? p : 0;
+			if (type == typeof(double))
+				return double.TryParse(value, out var p) ? p : 0;
+			if (type == typeof(long))
+				return long.TryParse(value, out var p) ? p : 0;
+			if (type == typeof(bool))
+				return bool.TryParse(value, out var p) && p;
 
 			return null;
 		}
