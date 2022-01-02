@@ -141,7 +141,7 @@ namespace Yorozu.GoogleDriveHelper.SpreadSheet
 		internal static List<T> ListCast<T>(string[,] data) where T : class
 		{
 			var type = typeof(T);
-			var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
+			var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 			var list = new List<T>(data.GetLength(1) - 1);
 
 			int FindArgIndex(string name)
